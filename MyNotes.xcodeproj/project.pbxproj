@@ -9,23 +9,29 @@
 /* Begin PBXBuildFile section */
 		DB29148A248560000010D818 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB291489248560000010D818 /* AppDelegate.swift */; };
 		DB29148C248560000010D818 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB29148B248560000010D818 /* SceneDelegate.swift */; };
-		DB29148E248560000010D818 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB29148D248560000010D818 /* ViewController.swift */; };
 		DB291491248560000010D818 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB29148F248560000010D818 /* Main.storyboard */; };
 		DB291494248560000010D818 /* MyNotes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DB291492248560000010D818 /* MyNotes.xcdatamodeld */; };
 		DB291496248560050010D818 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB291495248560050010D818 /* Assets.xcassets */; };
 		DB291499248560050010D818 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB291497248560050010D818 /* LaunchScreen.storyboard */; };
+		DB2914A12485704E0010D818 /* MyNotesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2914A02485704E0010D818 /* MyNotesTableViewController.swift */; };
+		DB2914A3248572140010D818 /* DetailNoteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2914A2248572140010D818 /* DetailNoteTableViewController.swift */; };
+		DB2914A52485725B0010D818 /*  NoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2914A42485725B0010D818 /*  NoteModel.swift */; };
+		DB2914A7248573C10010D818 /* CRUDModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2914A6248573C10010D818 /* CRUDModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		DB291486248560000010D818 /* MyNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB291489248560000010D818 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB29148B248560000010D818 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		DB29148D248560000010D818 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DB291490248560000010D818 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DB291493248560000010D818 /* MyNotes.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyNotes.xcdatamodel; sourceTree = "<group>"; };
 		DB291495248560050010D818 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DB291498248560050010D818 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DB29149A248560050010D818 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DB2914A02485704E0010D818 /* MyNotesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNotesTableViewController.swift; sourceTree = "<group>"; };
+		DB2914A2248572140010D818 /* DetailNoteTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNoteTableViewController.swift; sourceTree = "<group>"; };
+		DB2914A42485725B0010D818 /*  NoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " NoteModel.swift"; sourceTree = "<group>"; };
+		DB2914A6248573C10010D818 /* CRUDModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRUDModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +66,10 @@
 			children = (
 				DB291489248560000010D818 /* AppDelegate.swift */,
 				DB29148B248560000010D818 /* SceneDelegate.swift */,
-				DB29148D248560000010D818 /* ViewController.swift */,
+				DB2914A02485704E0010D818 /* MyNotesTableViewController.swift */,
+				DB2914A2248572140010D818 /* DetailNoteTableViewController.swift */,
+				DB2914A42485725B0010D818 /*  NoteModel.swift */,
+				DB2914A6248573C10010D818 /* CRUDModel.swift */,
 				DB29148F248560000010D818 /* Main.storyboard */,
 				DB291495248560050010D818 /* Assets.xcassets */,
 				DB291497248560050010D818 /* LaunchScreen.storyboard */,
@@ -141,9 +150,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB29148E248560000010D818 /* ViewController.swift in Sources */,
 				DB29148A248560000010D818 /* AppDelegate.swift in Sources */,
+				DB2914A3248572140010D818 /* DetailNoteTableViewController.swift in Sources */,
+				DB2914A52485725B0010D818 /*  NoteModel.swift in Sources */,
 				DB29148C248560000010D818 /* SceneDelegate.swift in Sources */,
+				DB2914A12485704E0010D818 /* MyNotesTableViewController.swift in Sources */,
+				DB2914A7248573C10010D818 /* CRUDModel.swift in Sources */,
 				DB291494248560000010D818 /* MyNotes.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
