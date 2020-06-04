@@ -7,6 +7,10 @@
 //
 
 import UIKit
+// create protocol to pass Note
+protocol DetailNoteTableViewControllerDelegate {
+    func addNote(_ detailNoteTableViewController: DetailNoteTableViewController, didAddNote Note: Note )
+}
 
 class DetailNoteTableViewController: UITableViewController {
     
@@ -52,10 +56,19 @@ class DetailNoteTableViewController: UITableViewController {
     var currentState = State.saveNote
     // add scrollView
     let scrollView = UIScrollView()
+    //create delegate of DetailNoteTableViewControllerDelegate
+    var delegate: DetailNoteTableViewControllerDelegate?
+    //create current date
+    let date = Date()
+    //create date formatter
+    let dateFormatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         bodyNoteTextView.delegate = self
+        //configure dateFormatter
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -137,6 +150,15 @@ class DetailNoteTableViewController: UITableViewController {
      */
     // configure saveNoteButtonAction
     @IBAction func saveNoteButtonAction(_ sender: Any) {
+        // create Note instance and add to it value
+        let note = Note()
+        note.title = titleNoteTextField.text
+        note.body = bodyNoteTextView.text
+        note.favorite = false
+        note.id = UUID() .uuidString
+        note.date = dateFormatter.string(from: date)
+        // pass to delegate Note
+        delegate?.addNote(self, didAddNote: note)
     }
 }
 
