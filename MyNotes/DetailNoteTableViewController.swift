@@ -24,6 +24,12 @@ class DetailNoteTableViewController: UITableViewController {
             case .editNote: return "Edit"
             }
         }
+        var navigationTitle: String {
+            switch self {
+            case .saveNote: return "New note"
+            case .editNote: return "Edit note"
+            }
+        }
     }
     
     @IBOutlet weak var saveNoteButtonOutlet: UIBarButtonItem! {
@@ -50,8 +56,8 @@ class DetailNoteTableViewController: UITableViewController {
             bodyNoteTextView.font = .preferredFont(forTextStyle: .body)
         }
     }
-    
-    //    var isEditingNote = true
+    // create Bool state editing note
+    var isEditingNote = false
     // create state of controller
     var currentState = State.saveNote
     // add scrollView
@@ -66,9 +72,13 @@ class DetailNoteTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bodyNoteTextView.delegate = self
+        titleNoteTextField.delegate = self
         //configure dateFormatter
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .none
+        //call setup and configure functions
+        updateSaveNoteButtonOutletState()
+        configureDesignController()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -148,24 +158,47 @@ class DetailNoteTableViewController: UITableViewController {
      // Pass the selected object to the new view controller.
      }
      */
+    //check is textView and textField is empty to disabled saveNoteButtonOutlet
+    @IBAction func textChanged(_ sender: Any) {
+        updateSaveNoteButtonOutletState()
+    }
     // configure saveNoteButtonAction
     @IBAction func saveNoteButtonAction(_ sender: Any) {
         // create Note instance and add to it value
         let note = Note()
-        note.title = titleNoteTextField.text
-        note.body = bodyNoteTextView.text
-        note.favorite = false
-        note.id = UUID() .uuidString
-        note.date = dateFormatter.string(from: date)
-        // pass to delegate Note
-        delegate?.addNote(self, didAddNote: note)
+        if !isEditingNote {
+            note.title = titleNoteTextField.text
+            note.body = bodyNoteTextView.text
+            note.favorite = false
+            note.id = UUID() .uuidString
+            note.date = dateFormatter.string(from: date)
+            // pass to delegate Note
+            delegate?.addNote(self, didAddNote: note)
+            dismiss(animated: true, completion: nil)
+        }
+        
+    }
+    //check is textView and textField is empty to disabled saveNoteButtonOutlet
+    func updateSaveNoteButtonOutletState() {
+        if (bodyNoteTextView.text.isEmpty || bodyNoteTextView.text == "Enter your note") && ((titleNoteTextField.text?.isEmpty) != nil) {
+            saveNoteButtonOutlet.isEnabled = false
+        } else {
+            saveNoteButtonOutlet.isEnabled = true
+        }
+    }
+    // configure design Controller
+    func configureDesignController() {
+        navigationItem.title = currentState.navigationTitle
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.barTintColor = .systemYellow
+        navigationController?.navigationBar.backgroundColor = .systemYellow
+        tableView.backgroundColor = .systemYellow
     }
 }
-
+// extension to UITextViewDelegate
 extension DetailNoteTableViewController: UITextViewDelegate {
     // configure size of textView when enter text
     func textViewDidChange(_ textView: UITextView) {
-        
         let size = textView.bounds.size
         let newSize = textView.sizeThatFits(CGSize(width: size.width, height: CGFloat.greatestFiniteMagnitude))
         // Resize the cell only when cell's size is changed
@@ -201,5 +234,28 @@ extension DetailNoteTableViewController: UITextViewDelegate {
             textView.text = "Enter your note"
             textView.textColor = UIColor.lightGray
         }
+    }
+    // check is textView is empty to disabled saveNoteButtonOutlet
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let text = (textView.text! as NSString).replacingCharacters(in: range, with: text)
+        if !text.isEmpty || text == "Enter your note"{
+            saveNoteButtonOutlet.isEnabled = true
+        } else {
+            saveNoteButtonOutlet.isEnabled = false
+        }
+        return true
+    }
+}
+// extension to UITextFieldDelegate
+extension DetailNoteTableViewController: UITextFieldDelegate {
+    // check is textfield is empty to disabled saveNoteButtonOutlet
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        if !text.isEmpty{
+            saveNoteButtonOutlet.isEnabled = true
+        } else {
+            saveNoteButtonOutlet.isEnabled = false
+        }
+        return true
     }
 }

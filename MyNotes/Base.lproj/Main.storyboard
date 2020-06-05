@@ -65,6 +65,9 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="textChanged:" destination="851-ov-kLD" eventType="editingChanged" id="yRz-DB-fHA"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -107,6 +110,7 @@
                                                 <constraint firstItem="yX6-Kb-9dl" firstAttribute="top" secondItem="eOw-nG-QPP" secondAttribute="top" id="wnY-Tv-4kz"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
