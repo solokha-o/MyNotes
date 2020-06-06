@@ -9,9 +9,9 @@
 import Foundation
 
 struct  NoteModel {
-    let title : String
-    let body : String
-    let date : String
-    let favorite : Bool
-    let id : String
+    var title : String = ""
+    var body : String = ""
+    var date : String = ""
+    var favorite : Bool = false
+    var id : String = ""
 }

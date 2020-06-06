@@ -68,6 +68,8 @@ class DetailNoteTableViewController: UITableViewController {
     let date = Date()
     //create date formatter
     let dateFormatter = DateFormatter()
+    // create instance CRUDModel
+    let crudModel = CRUDModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -164,19 +166,23 @@ class DetailNoteTableViewController: UITableViewController {
     }
     // configure saveNoteButtonAction
     @IBAction func saveNoteButtonAction(_ sender: Any) {
-        // create Note instance and add to it value
-        let note = Note()
+        // create NoteModel instance and add to it value
+        var noteModel = NoteModel()
         if !isEditingNote {
-            note.title = titleNoteTextField.text
-            note.body = bodyNoteTextView.text
-            note.favorite = false
-            note.id = UUID() .uuidString
-            note.date = dateFormatter.string(from: date)
+            let titleNote = titleNoteTextField.text ?? ""
+            let bodyNote = bodyNoteTextView.text ?? ""
+            noteModel.title = titleNote
+            noteModel.body = bodyNote
+            noteModel.favorite = false
+            noteModel.id = UUID() .uuidString
+            noteModel.date = dateFormatter.string(from: date)
+            // save Note to core data
+            let note = crudModel.saveItem(note: noteModel)
             // pass to delegate Note
             delegate?.addNote(self, didAddNote: note)
+            navigationController?.popViewController(animated: true)
             dismiss(animated: true, completion: nil)
         }
-        
     }
     //check is textView and textField is empty to disabled saveNoteButtonOutlet
     func updateSaveNoteButtonOutletState() {
