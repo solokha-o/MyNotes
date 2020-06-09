@@ -81,6 +81,9 @@ class DetailNoteTableViewController: UITableViewController {
         //call setup and configure functions
         updateSaveNoteButtonOutletState()
         configureDesignController()
+        // create NotificationCenter for keyboardWillShowNotification and keyboardWillHideNotification
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -199,6 +202,26 @@ class DetailNoteTableViewController: UITableViewController {
         navigationController?.navigationBar.barTintColor = .systemYellow
         navigationController?.navigationBar.backgroundColor = .systemYellow
         tableView.backgroundColor = .systemYellow
+    }
+    // configur function keyboardWillAppear and keyboardWillHide
+    @objc func keyboardWillAppear(notification: Notification) {
+        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardScreenEndFrame = keyboardValue.cgRectValue
+        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            scrollView.contentInset = .zero
+        } else {
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+        }
+        scrollView.scrollIndicatorInsets = scrollView.contentInset
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        print(notification)
+    }
+    //Deinit NotificationCenter
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 // extension to UITextViewDelegate
