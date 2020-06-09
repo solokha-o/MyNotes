@@ -9,10 +9,17 @@
 import UIKit
 
 class MyNotesTableViewController: UITableViewController {
-
+    
+    
+    //create array of Note
+    var notes = [Note]()
+    //create instance CRUDModel to work with core date
+    let crudModel = CRUDModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        //fetch notes
+        notes = crudModel.fetchItem(notes: notes)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -24,23 +31,24 @@ class MyNotesTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return notes.count
     }
 
-    /*
+    // configure cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "NoteTableViewCell", for: indexPath) as? NoteTableViewCell else { return UITableViewCell() }
+        cell.setCell(note: notes[indexPath.row])
         return cell
     }
-    */
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 55.0
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.

@@ -28,4 +28,17 @@ struct CRUDModel {
         }
         return newNote
     }
+    // fetch note from coreData
+    func fetchItem(notes: [Note]) -> [Note]{
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        var fetchNotes = notes
+        let fetchRequest = Note.fetchRequest() as NSFetchRequest<Note>
+        do {
+            fetchNotes = try context.fetch(fetchRequest)
+        } catch let error {
+            print("Error: \(error).")
+        }
+        return fetchNotes
+    }
 }
