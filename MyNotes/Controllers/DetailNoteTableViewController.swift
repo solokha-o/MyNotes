@@ -189,6 +189,7 @@ class DetailNoteTableViewController: UITableViewController {
     @IBAction func saveNoteButtonAction(_ sender: Any) {
         // create NoteModel instance and add to it value
         var noteModel = NoteModel()
+        //configure button for state save or edit
         if !isEditingNote {
             let titleNote = titleNoteTextField.text ?? ""
             let bodyNote = bodyNoteTextView.text ?? ""
@@ -204,7 +205,10 @@ class DetailNoteTableViewController: UITableViewController {
             navigationController?.popViewController(animated: true)
             dismiss(animated: true, completion: nil)
         } else {
-            
+            currentState = .saveNote
+            saveNoteButtonOutlet.title = currentState.rightButtonTitle
+            titleNoteTextField.isUserInteractionEnabled = true
+            bodyNoteTextView.isUserInteractionEnabled = true
         }
     }
     //check is textView and textField is empty to disabled saveNoteButtonOutlet
