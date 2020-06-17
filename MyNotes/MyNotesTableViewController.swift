@@ -8,23 +8,26 @@
 
 import UIKit
 
-class MyNotesTableViewController: UITableViewController {
-    
-    
+class MyNotesTableViewController: UITableViewController, DetailNoteTableViewControllerDelegate {
+
     //create array of Note
     var notes = [Note]()
     //create instance CRUDModel to work with core date
     let crudModel = CRUDModel()
+    //create bool instance for update core data
+    var isUpdateCoreData = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //fetch notes
-        notes = crudModel.fetchItem(notes: notes)
+        notes = crudModel.fetchNote(notes: notes)
+        //call setup and configure function
+        configureDesignController()
+        tableView.tableFooterView = UIView()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -48,27 +51,22 @@ class MyNotesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55.0
     }
-    
-
-    /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
+    // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
-
-    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
+            crudModel.removeNote(note: notes[indexPath.row])
+            notes.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            tableView.reloadSections([indexPath.section], with: .fade)
+        }
     }
-    */
+    
 
     /*
     // Override to support rearranging the table view.
@@ -94,5 +92,27 @@ class MyNotesTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    // configure design Controller
+    func configureDesignController() {
+        navigationItem.title = "My notes"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.barTintColor = .systemYellow
+        navigationController?.navigationBar.backgroundColor = .systemYellow
+    }
+    //configure delegate parameters
+    func addNote(_ detailNoteTableViewController: DetailNoteTableViewController, didAddNote note: Note) {
+        // if state edit coreData we find note for id and update in coreData and  tableview
+        if isUpdateCoreData {
+            
+        } else {
+            notes.append(note)
+        }
+        tableView.reloadData()
+    }
+    // configure segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        guard let destinationVC = segue.destination as? DetailNoteTableViewController else { return }
+        destinationVC.delegate = self
+    }
 }

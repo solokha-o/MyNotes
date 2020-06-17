@@ -9,7 +9,7 @@
 import UIKit
 // create protocol to pass Note
 protocol DetailNoteTableViewControllerDelegate {
-    func addNote(_ detailNoteTableViewController: DetailNoteTableViewController, didAddNote Note: Note )
+    func addNote(_ detailNoteTableViewController: DetailNoteTableViewController, didAddNote note: Note )
 }
 
 class DetailNoteTableViewController: UITableViewController {
@@ -76,8 +76,9 @@ class DetailNoteTableViewController: UITableViewController {
         bodyNoteTextView.delegate = self
         titleNoteTextField.delegate = self
         //configure dateFormatter
-        dateFormatter.dateStyle = .short
+        dateFormatter.dateStyle = .none
         dateFormatter.timeStyle = .none
+        dateFormatter.dateFormat = "dd.MM.yyyy"
         //call setup and configure functions
         updateSaveNoteButtonOutletState()
         configureDesignController()
@@ -180,7 +181,7 @@ class DetailNoteTableViewController: UITableViewController {
             noteModel.id = UUID() .uuidString
             noteModel.date = dateFormatter.string(from: date)
             // save Note to core data
-            let note = crudModel.saveItem(note: noteModel)
+            let note = crudModel.saveNote(note: noteModel)
             // pass to delegate Note
             delegate?.addNote(self, didAddNote: note)
             navigationController?.popViewController(animated: true)

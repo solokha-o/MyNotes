@@ -9,7 +9,7 @@
 import UIKit
 
 class NoteTableViewCell: UITableViewCell {
-
+    
     @IBOutlet weak var titleNoteLable: UILabel!
     @IBOutlet weak var bodyNoteLable: UILabel!
     @IBOutlet weak var dateNoteLable: UILabel!
@@ -20,10 +20,10 @@ class NoteTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     //setup cell function

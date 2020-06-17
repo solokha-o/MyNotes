@@ -12,7 +12,7 @@ import UIKit
 
 struct CRUDModel {
     // add save note to coreData
-    func saveItem(note: NoteModel) -> Note {
+    func saveNote(note: NoteModel) -> Note {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let newNote = Note(context: context)
@@ -29,7 +29,7 @@ struct CRUDModel {
         return newNote
     }
     // fetch note from coreData
-    func fetchItem(notes: [Note]) -> [Note]{
+    func fetchNote(notes: [Note]) -> [Note]{
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         var fetchNotes = notes
@@ -40,5 +40,18 @@ struct CRUDModel {
             print("Error: \(error).")
         }
         return fetchNotes
+    }
+    // remove note from coreDate
+    func removeNote(note: Note?) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        if let note = note {
+            context.delete(note)
+        }
+        do{
+            try context.save()
+        } catch let error {
+            print("Error \(error).")
+        }
     }
 }
