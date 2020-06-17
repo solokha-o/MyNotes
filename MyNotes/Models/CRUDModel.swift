@@ -54,4 +54,31 @@ struct CRUDModel {
             print("Error \(error).")
         }
     }
+    // update note in coreDate
+    func updatenote(notes: [Note], id: String, note: Note) {
+        for i in notes.indices {
+            if notes[i].id == id {
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                let context = appDelegate.persistentContainer.viewContext
+                let fetchRequest = Note.fetchRequest() as NSFetchRequest<Note>
+                do {
+                    let updateContext = try context.fetch(fetchRequest)
+                    if updateContext.count > 0 {
+                        let objUpdate =  updateContext[i] as NSManagedObject
+                        objUpdate.setValue(note.title, forKey: "title")
+                        objUpdate.setValue(note.body, forKey: "body")
+                        objUpdate.setValue(note.favorite, forKey: "favorite")
+                        
+                        do {
+                            try context.save()
+                        } catch let error {
+                            print("Error \(error).")
+                        }
+                    }
+                } catch let error {
+                        print("Error \(error).")
+                }
+            }
+        }
+    }
 }

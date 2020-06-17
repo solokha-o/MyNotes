@@ -66,6 +66,15 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
             tableView.reloadSections([indexPath.section], with: .fade)
         }
     }
+    // configure didSelectRowAt to show detail note
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let detailNoteTVC = storyboard?.instantiateViewController(identifier: "DetailNoteTableViewController") as? DetailNoteTableViewController else { return }
+        detailNoteTVC.isEditingNote = true
+        _ = detailNoteTVC.view
+        detailNoteTVC.titleNoteTextField.text = notes[indexPath.row].title
+        detailNoteTVC.bodyNoteTextView.text = notes[indexPath.row].body
+        show(detailNoteTVC, sender: nil)
+    }
     
 
     /*

@@ -68,11 +68,8 @@
 			children = (
 				DB291489248560000010D818 /* AppDelegate.swift */,
 				DB29148B248560000010D818 /* SceneDelegate.swift */,
-				DB2914A02485704E0010D818 /* MyNotesTableViewController.swift */,
-				DB6ABEDE248C2C1700C64543 /* NoteTableViewCell.swift */,
-				DB2914A2248572140010D818 /* DetailNoteTableViewController.swift */,
-				DB2914A42485725B0010D818 /*  NoteModel.swift */,
-				DB2914A6248573C10010D818 /* CRUDModel.swift */,
+				DB588233249A1CDC00B8AEBB /* Controllers */,
+				DB588234249A1D0400B8AEBB /* Models */,
 				DB29148F248560000010D818 /* Main.storyboard */,
 				DB291495248560050010D818 /* Assets.xcassets */,
 				DB291497248560050010D818 /* LaunchScreen.storyboard */,
@@ -80,6 +77,25 @@
 				DB291492248560000010D818 /* MyNotes.xcdatamodeld */,
 			);
 			path = MyNotes;
+			sourceTree = "<group>";
+		};
+		DB588233249A1CDC00B8AEBB /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DB2914A02485704E0010D818 /* MyNotesTableViewController.swift */,
+				DB2914A2248572140010D818 /* DetailNoteTableViewController.swift */,
+				DB6ABEDE248C2C1700C64543 /* NoteTableViewCell.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		DB588234249A1D0400B8AEBB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				DB2914A42485725B0010D818 /*  NoteModel.swift */,
+				DB2914A6248573C10010D818 /* CRUDModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

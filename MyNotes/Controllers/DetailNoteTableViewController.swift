@@ -44,6 +44,9 @@ class DetailNoteTableViewController: UITableViewController {
             titleNoteTextField.placeholder = "Note's title"
             titleNoteTextField.font = .preferredFont(forTextStyle: .title2)
             titleNoteTextField.clearButtonMode = .whileEditing
+            if isEditingNote {
+                titleNoteTextField.isUserInteractionEnabled = false
+            }
         }
     }
     @IBOutlet weak var bodyNoteTextView: UITextView! {
@@ -52,7 +55,11 @@ class DetailNoteTableViewController: UITableViewController {
             bodyNoteTextView.isScrollEnabled = false
             let placeHolder = "Enter your note"
             bodyNoteTextView.text = placeHolder
-            bodyNoteTextView.textColor = .lightGray
+            if isEditingNote {
+                bodyNoteTextView.isUserInteractionEnabled = false
+            } else {
+                bodyNoteTextView.textColor = .lightGray
+            }
             bodyNoteTextView.font = .preferredFont(forTextStyle: .body)
         }
     }
@@ -73,6 +80,9 @@ class DetailNoteTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if isEditingNote {
+            currentState = .editNote
+        }
         bodyNoteTextView.delegate = self
         titleNoteTextField.delegate = self
         //configure dateFormatter
@@ -91,6 +101,13 @@ class DetailNoteTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+//    //configur view will appear save or edit state
+//    override func viewWillAppear(_ animated: Bool) {
+//        if isEditingNote {
+//            currentState = .editNote
+//        }
+//    }
     
     // MARK: - Table view data source
     // configure title of section
@@ -186,14 +203,18 @@ class DetailNoteTableViewController: UITableViewController {
             delegate?.addNote(self, didAddNote: note)
             navigationController?.popViewController(animated: true)
             dismiss(animated: true, completion: nil)
+        } else {
+            
         }
     }
     //check is textView and textField is empty to disabled saveNoteButtonOutlet
     func updateSaveNoteButtonOutletState() {
-        if (bodyNoteTextView.text.isEmpty || bodyNoteTextView.text == "Enter your note") && ((titleNoteTextField.text?.isEmpty) != nil) {
-            saveNoteButtonOutlet.isEnabled = false
-        } else {
-            saveNoteButtonOutlet.isEnabled = true
+        if !isEditingNote {
+            if (bodyNoteTextView.text.isEmpty || bodyNoteTextView.text == "Enter your note") && ((titleNoteTextField.text?.isEmpty) != nil) {
+                saveNoteButtonOutlet.isEnabled = false
+            } else {
+                saveNoteButtonOutlet.isEnabled = true
+            }
         }
     }
     // configure design Controller
@@ -203,6 +224,7 @@ class DetailNoteTableViewController: UITableViewController {
         navigationController?.navigationBar.barTintColor = .systemYellow
         navigationController?.navigationBar.backgroundColor = .systemYellow
         tableView.backgroundColor = .systemYellow
+        saveNoteButtonOutlet.title = currentState.rightButtonTitle
     }
     // configur function keyboardWillAppear and keyboardWillHide
     @objc func keyboardWillAppear(notification: Notification) {
@@ -268,10 +290,12 @@ extension DetailNoteTableViewController: UITextViewDelegate {
     // check is textView is empty to disabled saveNoteButtonOutlet
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let text = (textView.text! as NSString).replacingCharacters(in: range, with: text)
-        if !text.isEmpty || text == "Enter your note"{
-            saveNoteButtonOutlet.isEnabled = true
-        } else {
-            saveNoteButtonOutlet.isEnabled = false
+        if !isEditingNote {
+            if !text.isEmpty || text == "Enter your note"{
+                saveNoteButtonOutlet.isEnabled = true
+            } else {
+                saveNoteButtonOutlet.isEnabled = false
+            }
         }
         return true
     }
@@ -281,10 +305,12 @@ extension DetailNoteTableViewController: UITextFieldDelegate {
     // check is textfield is empty to disabled saveNoteButtonOutlet
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-        if !text.isEmpty{
-            saveNoteButtonOutlet.isEnabled = true
-        } else {
-            saveNoteButtonOutlet.isEnabled = false
+        if !isEditingNote {
+            if !text.isEmpty{
+                saveNoteButtonOutlet.isEnabled = true
+            } else {
+                saveNoteButtonOutlet.isEnabled = false
+            }
         }
         return true
     }
