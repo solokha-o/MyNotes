@@ -31,7 +31,7 @@ class NoteTableViewCell: UITableViewCell {
         titleNoteLable.text = note.title
         bodyNoteLable.text = note.body
         dateNoteLable.text = note.date
-        if note.favorite {
+        if note.favourite {
             favoriteNoteImageView.image = UIImage(systemName: "star.fill")
         } else {
             favoriteNoteImageView.image = UIImage(systemName: "star")

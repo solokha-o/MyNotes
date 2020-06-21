@@ -9,7 +9,7 @@
 import UIKit
 // create protocol to pass Note
 protocol DetailNoteTableViewControllerDelegate {
-    func addNote(_ detailNoteTableViewController: DetailNoteTableViewController, didAddNote note: Note )
+    func addNote(_ detailNoteTableViewController: DetailNoteTableViewController, didAddNote noteModel: NoteModel )
 }
 
 class DetailNoteTableViewController: UITableViewController {
@@ -27,7 +27,7 @@ class DetailNoteTableViewController: UITableViewController {
         var navigationTitle: String {
             switch self {
             case .saveNote: return "New note"
-            case .editNote: return "Edit note"
+            case .editNote: return "My note"
             }
         }
     }
@@ -77,6 +77,10 @@ class DetailNoteTableViewController: UITableViewController {
     let dateFormatter = DateFormatter()
     // create instance CRUDModel
     let crudModel = CRUDModel()
+    // create instance NoteModel for pass property in edit state
+    var editNote = NoteModel()
+    // create bool instance for check edit note
+    var isSaveEditNote = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,25 +94,12 @@ class DetailNoteTableViewController: UITableViewController {
         dateFormatter.timeStyle = .none
         dateFormatter.dateFormat = "dd.MM.yyyy"
         //call setup and configure functions
-        updateSaveNoteButtonOutletState()
+        //        updateSaveNoteButtonOutletState()
         configureDesignController()
         // create NotificationCenter for keyboardWillShowNotification and keyboardWillHideNotification
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-    
-//    //configur view will appear save or edit state
-//    override func viewWillAppear(_ animated: Bool) {
-//        if isEditingNote {
-//            currentState = .editNote
-//        }
-//    }
-    
     // MARK: - Table view data source
     // configure title of section
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -123,102 +114,61 @@ class DetailNoteTableViewController: UITableViewController {
         }
         return titleSection
     }
-    
+    //configure height For Row
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-    /*
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-     
-     // Configure the cell...
-     
-     return cell
-     }
-     */
-    
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    //check is textView and textField is empty to disabled saveNoteButtonOutlet
-    @IBAction func textChanged(_ sender: Any) {
-        updateSaveNoteButtonOutletState()
-    }
     // configure saveNoteButtonAction
-    @IBAction func saveNoteButtonAction(_ sender: Any) {
+    @IBAction func saveNoteButtonAction(_ sender: UIBarButtonItem) {
         // create NoteModel instance and add to it value
         var noteModel = NoteModel()
+        
+        
         //configure button for state save or edit
-        if !isEditingNote {
-            let titleNote = titleNoteTextField.text ?? ""
-            let bodyNote = bodyNoteTextView.text ?? ""
-            noteModel.title = titleNote
-            noteModel.body = bodyNote
-            noteModel.favorite = false
-            noteModel.id = UUID() .uuidString
-            noteModel.date = dateFormatter.string(from: date)
-            // save Note to core data
-            let note = crudModel.saveNote(note: noteModel)
-            // pass to delegate Note
-            delegate?.addNote(self, didAddNote: note)
-            navigationController?.popViewController(animated: true)
-            dismiss(animated: true, completion: nil)
-        } else {
-            currentState = .saveNote
-            saveNoteButtonOutlet.title = currentState.rightButtonTitle
+        switch isEditingNote {
+        case false:
+            if isSaveEditNote {
+                if sender.title == "Save" {
+                    editNote.title = titleNoteTextField.text ?? ""
+                    editNote.body = bodyNoteTextView.text ?? ""
+                    print(editNote.id)
+                    if titleNoteTextField.text == "" || (bodyNoteTextView.text == "Enter your note" || bodyNoteTextView.text == "") {
+                        let alert = UIAlertController(title: "You forgot", message: "The field must be filled!", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    } else {
+                        // pass to delegate noteModel
+                        delegate?.addNote(self, didAddNote: editNote)
+                        navigationController?.popToRootViewController(animated: true)
+                        isSaveEditNote = false
+                    }
+                }
+            } else {
+                let titleNote = titleNoteTextField.text ?? ""
+                let bodyNote = bodyNoteTextView.text ?? ""
+                noteModel.title = titleNote
+                noteModel.body = bodyNote
+                noteModel.favourite = false
+                noteModel.id = UUID() .uuidString
+                noteModel.date = dateFormatter.string(from: date)
+                if titleNoteTextField.text == "" || (bodyNoteTextView.text == "Enter your note" || bodyNoteTextView.text == "") {
+                    let alert = UIAlertController(title: "You forgot", message: "The field must be filled!", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    // pass to delegate noteModel
+                    delegate?.addNote(self, didAddNote: noteModel)
+                    navigationController?.popViewController(animated: true)
+                }
+            }
+        case true:
+            currentState = .editNote
+            sender.title = "Save"
+            navigationItem.title = "Edit note"
             titleNoteTextField.isUserInteractionEnabled = true
             bodyNoteTextView.isUserInteractionEnabled = true
-        }
-    }
-    //check is textView and textField is empty to disabled saveNoteButtonOutlet
-    func updateSaveNoteButtonOutletState() {
-        if !isEditingNote {
-            if (bodyNoteTextView.text.isEmpty || bodyNoteTextView.text == "Enter your note") && ((titleNoteTextField.text?.isEmpty) != nil) {
-                saveNoteButtonOutlet.isEnabled = false
-            } else {
-                saveNoteButtonOutlet.isEnabled = true
-            }
+            isSaveEditNote = true
+            isEditingNote = false
         }
     }
     // configure design Controller
@@ -269,15 +219,6 @@ extension DetailNoteTableViewController: UITextViewDelegate {
             }
         }
     }
-    //    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-    //        scrollView.setContentOffset(CGPoint(x: 0, y: textView.superview?.frame.origin.y ?? 0), animated: true)
-    //        return true
-    //    }
-    //
-    //    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-    //        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-    //        return true
-    //    }
     //configure textView that you can see placeholder and color of text
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
@@ -291,31 +232,8 @@ extension DetailNoteTableViewController: UITextViewDelegate {
             textView.textColor = UIColor.lightGray
         }
     }
-    // check is textView is empty to disabled saveNoteButtonOutlet
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        let text = (textView.text! as NSString).replacingCharacters(in: range, with: text)
-        if !isEditingNote {
-            if !text.isEmpty || text == "Enter your note"{
-                saveNoteButtonOutlet.isEnabled = true
-            } else {
-                saveNoteButtonOutlet.isEnabled = false
-            }
-        }
-        return true
-    }
 }
 // extension to UITextFieldDelegate
 extension DetailNoteTableViewController: UITextFieldDelegate {
-    // check is textfield is empty to disabled saveNoteButtonOutlet
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-        if !isEditingNote {
-            if !text.isEmpty{
-                saveNoteButtonOutlet.isEnabled = true
-            } else {
-                saveNoteButtonOutlet.isEnabled = false
-            }
-        }
-        return true
-    }
+    
 }

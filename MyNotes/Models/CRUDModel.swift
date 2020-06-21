@@ -12,15 +12,15 @@ import UIKit
 
 struct CRUDModel {
     // add save note to coreData
-    func saveNote(note: NoteModel) -> Note {
+    func saveNote(noteModel: NoteModel) -> Note {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let newNote = Note(context: context)
-        newNote.title = note.title
-        newNote.body = note.body
-        newNote.date = note.date
-        newNote.favorite = note.favorite
-        newNote.id = note.id
+        newNote.title = noteModel.title
+        newNote.body = noteModel.body
+        newNote.date = noteModel.date
+        newNote.favourite = noteModel.favourite
+        newNote.id = noteModel.id
         do {
             try context.save()
         } catch let error {
@@ -55,9 +55,9 @@ struct CRUDModel {
         }
     }
     // update note in coreDate
-    func updatenote(notes: [Note], id: String, note: Note) {
+    func updatenote(notes: [Note], noteModel: NoteModel) {
         for i in notes.indices {
-            if notes[i].id == id {
+            if notes[i].id == noteModel.id {
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 let context = appDelegate.persistentContainer.viewContext
                 let fetchRequest = Note.fetchRequest() as NSFetchRequest<Note>
@@ -65,10 +65,9 @@ struct CRUDModel {
                     let updateContext = try context.fetch(fetchRequest)
                     if updateContext.count > 0 {
                         let objUpdate =  updateContext[i] as NSManagedObject
-                        objUpdate.setValue(note.title, forKey: "title")
-                        objUpdate.setValue(note.body, forKey: "body")
-                        objUpdate.setValue(note.favorite, forKey: "favorite")
-                        
+                        objUpdate.setValue(noteModel.title, forKey: "title")
+                        objUpdate.setValue(noteModel.body, forKey: "body")
+                        objUpdate.setValue(noteModel.favourite, forKey: "favourite")
                         do {
                             try context.save()
                         } catch let error {
@@ -76,7 +75,7 @@ struct CRUDModel {
                         }
                     }
                 } catch let error {
-                        print("Error \(error).")
+                    print("Error \(error).")
                 }
             }
         }

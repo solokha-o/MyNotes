@@ -121,9 +121,6 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
-                                                    <connections>
-                                                        <action selector="textChanged:" destination="851-ov-kLD" eventType="editingChanged" id="yRz-DB-fHA"/>
-                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>

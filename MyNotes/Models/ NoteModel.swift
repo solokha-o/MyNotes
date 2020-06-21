@@ -12,6 +12,6 @@ struct  NoteModel {
     var title : String = ""
     var body : String = ""
     var date : String = ""
-    var favorite : Bool = false
+    var favourite : Bool = false
     var id : String = ""
 }

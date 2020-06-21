@@ -9,7 +9,7 @@
 import UIKit
 
 class MyNotesTableViewController: UITableViewController, DetailNoteTableViewControllerDelegate {
-
+    
     //create array of Note
     var notes = [Note]()
     //create instance CRUDModel to work with core date
@@ -24,36 +24,34 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
         //call setup and configure function
         configureDesignController()
         tableView.tableFooterView = UIView()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
+        // setup leftBarButtonItem
         self.navigationItem.leftBarButtonItem = self.editButtonItem
     }
-
+    
     // MARK: - Table view data source
-
+    // configure numberOfSections
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    //configure numberOfRowsInSection
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return notes.count
     }
-
     // configure cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "NoteTableViewCell", for: indexPath) as? NoteTableViewCell else { return UITableViewCell() }
         cell.setCell(note: notes[indexPath.row])
         return cell
     }
+    //configure height For Row
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55.0
     }
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
+        // Return false if you do not want the specified item to be editable.
         return true
     }
     // Override to support editing the table view.
@@ -73,34 +71,23 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
         _ = detailNoteTVC.view
         detailNoteTVC.titleNoteTextField.text = notes[indexPath.row].title
         detailNoteTVC.bodyNoteTextView.text = notes[indexPath.row].body
-        show(detailNoteTVC, sender: nil)
+        detailNoteTVC.editNote.id = notes[indexPath.row].id ?? ""
+        detailNoteTVC.editNote.date = notes[indexPath.row].date ?? ""
+        detailNoteTVC.editNote.favourite = notes[indexPath.row].favourite
+        detailNoteTVC.delegate = self
+        isUpdateCoreData = true
+        show(detailNoteTVC, sender: true)
     }
-    
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    //configure view For Footer In Section
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
+        footerView.backgroundColor = .white
+        let countNoteLable = UILabel(frame: CGRect(x: 100, y: 0, width: tableView.frame.size.width, height: 40))
+        countNoteLable.text = "You have \(notes.count) notes"
+        countNoteLable.textColor = .systemGray
+        footerView.addSubview(countNoteLable)
+        return footerView
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     // configure design Controller
     func configureDesignController() {
         navigationItem.title = "My notes"
@@ -109,12 +96,14 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
         navigationController?.navigationBar.backgroundColor = .systemYellow
     }
     //configure delegate parameters
-    func addNote(_ detailNoteTableViewController: DetailNoteTableViewController, didAddNote note: Note) {
+    func addNote(_ detailNoteTableViewController: DetailNoteTableViewController, didAddNote noteModel: NoteModel) {
         // if state edit coreData we find note for id and update in coreData and  tableview
         if isUpdateCoreData {
-            
+            crudModel.updatenote(notes: notes, noteModel: noteModel)
+            notes = crudModel.fetchNote(notes: notes)
+            isUpdateCoreData = false
         } else {
-            notes.append(note)
+            notes.append(crudModel.saveNote(noteModel: noteModel))
         }
         tableView.reloadData()
     }
@@ -123,5 +112,6 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
         super.prepare(for: segue, sender: sender)
         guard let destinationVC = segue.destination as? DetailNoteTableViewController else { return }
         destinationVC.delegate = self
+        isUpdateCoreData = false
     }
 }
