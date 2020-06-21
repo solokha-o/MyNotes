@@ -16,6 +16,15 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
     let crudModel = CRUDModel()
     //create bool instance for update core data
     var isUpdateCoreData = false
+    // create property for search bar and filtered results
+    let search = UISearchController(searchResultsController: nil)
+    var filteredNotes = [Note]()
+    var isSearchBarEmpty: Bool {
+        return search.searchBar.text?.isEmpty ?? true
+    }
+    var isFiltering: Bool {
+        return search.isActive && !isSearchBarEmpty
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +32,7 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
         notes = crudModel.fetchNote(notes: notes)
         //call setup and configure function
         configureDesignController()
+        setSearch()
         tableView.tableFooterView = UIView()
         // setup leftBarButtonItem
         self.navigationItem.leftBarButtonItem = self.editButtonItem
@@ -31,18 +41,23 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
     // MARK: - Table view data source
     // configure numberOfSections
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     //configure numberOfRowsInSection
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        if isFiltering {
+            return filteredNotes.count
+        }
         return notes.count
     }
     // configure cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "NoteTableViewCell", for: indexPath) as? NoteTableViewCell else { return UITableViewCell() }
-        cell.setCell(note: notes[indexPath.row])
+        if isFiltering {
+            cell.setCell(note: filteredNotes[indexPath.row])
+        } else {
+            cell.setCell(note: notes[indexPath.row])
+        }
         return cell
     }
     //configure height For Row
@@ -113,5 +128,32 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
         guard let destinationVC = segue.destination as? DetailNoteTableViewController else { return }
         destinationVC.delegate = self
         isUpdateCoreData = false
+    }
+    //configure search controller
+    func setSearch() {
+        navigationItem.searchController = search
+        navigationItem.hidesSearchBarWhenScrolling = true
+        search.searchResultsUpdater = self
+        search.obscuresBackgroundDuringPresentation = false
+        search.searchBar.placeholder = "Search note"
+        definesPresentationContext = true
+    }
+    // func for filter Content For Search Text
+    func filterContentForSearchText(_ searchText: String) {
+        filteredNotes = notes.filter { (note: Note) -> Bool in
+            if let title = note.title, let body = note.body, let date = note.date {
+                return (title.lowercased().contains(searchText.lowercased())) || (body.lowercased().contains(searchText.lowercased())) || (date.lowercased().contains(searchText.lowercased()))
+            }
+            return true
+        }
+        tableView.reloadData()
+    }
+}
+
+//configure extension MyNotesTableViewController to UISearchResultsUpdating
+extension MyNotesTableViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = search.searchBar
+        filterContentForSearchText(searchBar.text!)
     }
 }
