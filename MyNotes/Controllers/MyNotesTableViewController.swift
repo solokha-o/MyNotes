@@ -103,6 +103,32 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
         footerView.addSubview(countNoteLable)
         return footerView
     }
+    //configure action leading Swipe For Row
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let favourite = favouriteAction(at: indexPath)
+        return UISwipeActionsConfiguration(actions: [favourite])
+    }
+    //configure action to make note favourite
+    func favouriteAction (at indexPath: IndexPath) -> UIContextualAction {
+        let note = notes[indexPath.row]
+        let action = UIContextualAction(style: .normal, title: "Favourite") { (action, view, complition) in
+            var modelNote = NoteModel()
+            if let title = note.title, let body = note.body, let date = note.date, let id = note.id {
+                modelNote.title = title
+                modelNote.body = body
+                modelNote.date = date
+                modelNote.id = id
+                modelNote.favourite = !note.favourite
+                self.crudModel.updatenote(notes: self.notes, noteModel: modelNote)
+                self.notes = self.crudModel.fetchNote(notes: self.notes)
+                self.tableView.reloadData()
+                complition(true)
+            }
+        }
+        action.backgroundColor = note.favourite ? .systemPink : .systemGray
+        action.image = note.favourite ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+        return action
+    }
     // configure design Controller
     func configureDesignController() {
         navigationItem.title = "My notes"
