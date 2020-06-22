@@ -62,7 +62,7 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
     }
     //configure height For Row
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55.0
+        return 70.0
     }
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
