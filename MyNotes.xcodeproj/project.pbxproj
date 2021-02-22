@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		81517F5CB9CDBFA7AEDCB1A4 /* Pods_MyNotes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D34813A2906C20BBC2C3EB8 /* Pods_MyNotes.framework */; };
 		DB29148A248560000010D818 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB291489248560000010D818 /* AppDelegate.swift */; };
 		DB29148C248560000010D818 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB29148B248560000010D818 /* SceneDelegate.swift */; };
 		DB291491248560000010D818 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB29148F248560000010D818 /* Main.storyboard */; };
@@ -17,10 +18,13 @@
 		DB2914A3248572140010D818 /* DetailNoteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2914A2248572140010D818 /* DetailNoteTableViewController.swift */; };
 		DB2914A52485725B0010D818 /*  NoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2914A42485725B0010D818 /*  NoteModel.swift */; };
 		DB2914A7248573C10010D818 /* CRUDModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2914A6248573C10010D818 /* CRUDModel.swift */; };
+		DB4F8C6625E42242004987EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB4F8C6525E42242004987EC /* GoogleService-Info.plist */; };
 		DB6ABEDF248C2C1700C64543 /* NoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6ABEDE248C2C1700C64543 /* NoteTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1D34813A2906C20BBC2C3EB8 /* Pods_MyNotes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyNotes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D77679E29FF83961414D6E0 /* Pods-MyNotes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyNotes.debug.xcconfig"; path = "Target Support Files/Pods-MyNotes/Pods-MyNotes.debug.xcconfig"; sourceTree = "<group>"; };
 		DB291486248560000010D818 /* MyNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB291489248560000010D818 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB29148B248560000010D818 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -33,7 +37,9 @@
 		DB2914A2248572140010D818 /* DetailNoteTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNoteTableViewController.swift; sourceTree = "<group>"; };
 		DB2914A42485725B0010D818 /*  NoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " NoteModel.swift"; sourceTree = "<group>"; };
 		DB2914A6248573C10010D818 /* CRUDModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRUDModel.swift; sourceTree = "<group>"; };
+		DB4F8C6525E42242004987EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DB6ABEDE248C2C1700C64543 /* NoteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTableViewCell.swift; sourceTree = "<group>"; };
+		ECB0476D4A494FF266408947 /* Pods-MyNotes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyNotes.release.xcconfig"; path = "Target Support Files/Pods-MyNotes/Pods-MyNotes.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,17 +47,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81517F5CB9CDBFA7AEDCB1A4 /* Pods_MyNotes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C61F8713FF1C3D22E559B2F9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7D77679E29FF83961414D6E0 /* Pods-MyNotes.debug.xcconfig */,
+				ECB0476D4A494FF266408947 /* Pods-MyNotes.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		DB29147D248560000010D818 = {
 			isa = PBXGroup;
 			children = (
 				DB291488248560000010D818 /* MyNotes */,
 				DB291487248560000010D818 /* Products */,
+				C61F8713FF1C3D22E559B2F9 /* Pods */,
+				F67748DEC4A1E8EBFF39584D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,6 +93,7 @@
 				DB291495248560050010D818 /* Assets.xcassets */,
 				DB291497248560050010D818 /* LaunchScreen.storyboard */,
 				DB29149A248560050010D818 /* Info.plist */,
+				DB4F8C6525E42242004987EC /* GoogleService-Info.plist */,
 				DB291492248560000010D818 /* MyNotes.xcdatamodeld */,
 			);
 			path = MyNotes;
@@ -98,6 +118,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		F67748DEC4A1E8EBFF39584D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1D34813A2906C20BBC2C3EB8 /* Pods_MyNotes.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -105,9 +133,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DB29149D248560050010D818 /* Build configuration list for PBXNativeTarget "MyNotes" */;
 			buildPhases = (
+				2441C4ADD1174EE9E9E92CCF /* [CP] Check Pods Manifest.lock */,
 				DB291482248560000010D818 /* Sources */,
 				DB291483248560000010D818 /* Frameworks */,
 				DB291484248560000010D818 /* Resources */,
+				2DD38C21DF20E8414F5015D9 /* [CP] Embed Pods Frameworks */,
+				8D89166C3AC533F989612AC9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -157,12 +188,72 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB291499248560050010D818 /* LaunchScreen.storyboard in Resources */,
+				DB4F8C6625E42242004987EC /* GoogleService-Info.plist in Resources */,
 				DB291496248560050010D818 /* Assets.xcassets in Resources */,
 				DB291491248560000010D818 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2441C4ADD1174EE9E9E92CCF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MyNotes-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2DD38C21DF20E8414F5015D9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyNotes/Pods-MyNotes-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyNotes/Pods-MyNotes-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MyNotes/Pods-MyNotes-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8D89166C3AC533F989612AC9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyNotes/Pods-MyNotes-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MyNotes/Pods-MyNotes-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MyNotes/Pods-MyNotes-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DB291482248560000010D818 /* Sources */ = {
@@ -318,6 +409,7 @@
 		};
 		DB29149E248560050010D818 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D77679E29FF83961414D6E0 /* Pods-MyNotes.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -336,6 +428,7 @@
 		};
 		DB29149F248560050010D818 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ECB0476D4A494FF266408947 /* Pods-MyNotes.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
