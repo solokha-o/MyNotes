@@ -7,8 +7,16 @@
 //
 
 import UIKit
+import Firebase
+import GoogleSignIn
 
 class MyNotesTableViewController: UITableViewController, DetailNoteTableViewControllerDelegate {
+    //create and configure log out from account button
+    @IBOutlet weak var logOutButtonOutlet: UIBarButtonItem!{
+        didSet {
+            logOutButtonOutlet.title = "Log out"
+        }
+    }
     
     //create array of Note
     var notes = [Note]()
@@ -174,8 +182,20 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
         }
         tableView.reloadData()
     }
+    //configure action for log out button
+    @IBAction func logOutButtonAction(_ sender: UIBarButtonItem) {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            guard let signInVC = storyboard.instantiateViewController(identifier: "SignInViewController") as? SignInViewController else { return }
+            UIApplication.shared.windows.first?.rootViewController = signInVC
+            UIApplication.shared.windows.first?.makeKeyAndVisible()
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+    }
 }
-
 //configure extension MyNotesTableViewController to UISearchResultsUpdating
 extension MyNotesTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
