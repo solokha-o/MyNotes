@@ -68,6 +68,9 @@ class SignInViewController: UIViewController {
             emailTextField.placeholder = "Enter your e-mail"
             emailTextField.leftView = UIImageView(image: UIImage(systemName: "person.circle"))
             emailTextField.leftViewMode = .always
+            emailTextField.delegate = self
+            emailTextField.clipsToBounds = true
+            emailTextField.layer.cornerRadius = 10.0
         }
     }
     @IBOutlet weak var passwordLabel: UILabel! {
@@ -80,6 +83,9 @@ class SignInViewController: UIViewController {
             passwordTextField.placeholder = "Enter your password"
             passwordTextField.leftView = UIImageView(image: UIImage(systemName: "lock"))
             passwordTextField.leftViewMode = .always
+            passwordTextField.delegate = self
+            passwordTextField.clipsToBounds = true
+            passwordTextField.layer.cornerRadius = 10.0
         }
     }
     @IBOutlet weak var signInButtonOutlet: UIButton!
@@ -90,7 +96,14 @@ class SignInViewController: UIViewController {
     }
     @IBOutlet weak var signUpButtonOutlet: UIButton!
     //add sign-in button outlet
-    @IBOutlet weak var signInByGoogleButtonOutlet: GIDSignInButton!
+    @IBOutlet weak var signInByGoogleButtonOutlet: UIButton! {
+        didSet {
+            signInByGoogleButtonOutlet.setTitle("Sign-in by Google", for: .normal)
+            signInByGoogleButtonOutlet.setImage(UIImage(named: "google"), for: .normal)
+            signInByGoogleButtonOutlet.clipsToBounds = true
+            signInByGoogleButtonOutlet.layer.cornerRadius = 10.0
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,9 +111,39 @@ class SignInViewController: UIViewController {
         GIDSignIn.sharedInstance()?.presentingViewController = self
         
         setupController()
+        hideKeyboardTappedScreen()
     }
-    //configure sing-in button
+    //configure sing-in button action
     @IBAction func signInButtonAction(_ sender: UIButton) {
+        authorisationAction()
+    }
+    //configure sing-up button action
+    @IBAction func signUpButtonAction(_ sender: UIButton) {
+        switch currentState {
+            case .signIn:
+                currentState = .signUp
+                UIView.transition(with: signInStackView, duration: 0.5, options: .transitionFlipFromTop) {
+                    self.setupController()
+                }
+            case .signUp:
+                currentState = .signIn
+                UIView.transition(with: signInStackView, duration: 0.5, options: .transitionFlipFromBottom) {
+                    self.setupController()
+                }
+        }
+    }
+    @IBAction func signInGoogleButtonAction(_ sender: UIButton) {
+        GIDSignIn.sharedInstance().signIn()
+    }
+    //configure alert that can show message with error
+    func errorAlert(with message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    //configure sing-in action and sing-up action
+    func authorisationAction() {
         //get email and password from TextField
         let userEmail = emailTextField.text
         let userPassword = passwordTextField.text
@@ -174,27 +217,6 @@ class SignInViewController: UIViewController {
             errorAlert(with: errorMessage)
         }
     }
-    //configure sing-up button action
-    @IBAction func signUpButtonAction(_ sender: UIButton) {
-        switch currentState {
-            case .signIn:
-                currentState = .signUp
-                UIView.transition(with: signInStackView, duration: 0.5, options: .transitionFlipFromTop) {
-                    self.setupController()
-                }
-            case .signUp:
-                currentState = .signIn
-                UIView.transition(with: signInStackView, duration: 0.5, options: .transitionFlipFromBottom) {
-                    self.setupController()
-                }
-        }
-    }
-    //configure alert that can show message with error
-    func errorAlert(with message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-    }
     
     //configure controller and all his components
     func setupController() {
@@ -223,4 +245,28 @@ class SignInViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
+}
+//hide keyboard when tap on screen
+extension UIViewController {
+    func hideKeyboardTappedScreen() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
+//change textField by return key
+extension SignInViewController: UITextFieldDelegate {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailTextField {
+            passwordTextField.becomeFirstResponder()
+        } else {
+            passwordTextField.resignFirstResponder()
+            authorisationAction()
+        }
+        return true
+    }
 }
