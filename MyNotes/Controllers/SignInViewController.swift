@@ -111,7 +111,6 @@ class SignInViewController: UIViewController {
         emailLabel.text = "E-mail"
         passwordLabel.text = "Password"
         signUpLabel.text = "If you not sign-up press ⬇️"
-        signUpButtonOutlet.setTitle("Sign-up", for: .normal)
     }
     
     /*
