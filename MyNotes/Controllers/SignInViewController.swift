@@ -58,12 +58,36 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var signInStackView: UIStackView!
     //add all components of controller
     @IBOutlet weak var authorisationLabel: UILabel!
-    @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordLabel: UILabel!
-    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var emailLabel: UILabel! {
+        didSet {
+            emailLabel.text = "E-mail"
+        }
+    }
+    @IBOutlet weak var emailTextField: UITextField! {
+        didSet {
+            emailTextField.placeholder = "Enter your e-mail"
+            emailTextField.leftView = UIImageView(image: UIImage(systemName: "person.circle"))
+            emailTextField.leftViewMode = .always
+        }
+    }
+    @IBOutlet weak var passwordLabel: UILabel! {
+        didSet {
+            passwordLabel.text = "Password"
+        }
+    }
+    @IBOutlet weak var passwordTextField: UITextField! {
+        didSet {
+            passwordTextField.placeholder = "Enter your password"
+            passwordTextField.leftView = UIImageView(image: UIImage(systemName: "lock"))
+            passwordTextField.leftViewMode = .always
+        }
+    }
     @IBOutlet weak var signInButtonOutlet: UIButton!
-    @IBOutlet weak var signUpLabel: UILabel!
+    @IBOutlet weak var signUpLabel: UILabel! {
+        didSet {
+            signUpLabel.text = "If you not sign-up press ⬇️"
+        }
+    }
     @IBOutlet weak var signUpButtonOutlet: UIButton!
     //add sign-in button outlet
     @IBOutlet weak var signInByGoogleButtonOutlet: GIDSignInButton!
@@ -112,7 +136,7 @@ class SignInViewController: UIViewController {
                             }
                         }
                     }
-                    //if state of controller is sing-in user can to enter email and password and its check
+                //if state of controller is sing-in user can to enter email and password and its check
                 case .signIn:
                     Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
                         if let error = error as NSError? {
@@ -188,9 +212,6 @@ class SignInViewController: UIViewController {
                 signUpButtonOutlet.setTitle(currentState.signUpButtonOutletTitle, for: .normal)
                 signInByGoogleButtonOutlet.isHidden = currentState.signInByGoogleButtonOutletState
         }
-        emailLabel.text = "E-mail"
-        passwordLabel.text = "Password"
-        signUpLabel.text = "If you not sign-up press ⬇️"
     }
     
     /*
