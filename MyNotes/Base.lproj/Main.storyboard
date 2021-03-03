@@ -290,6 +290,7 @@
                         <outlet property="passwordTextField" destination="tBp-sA-vKV" id="eDW-TZ-IUG"/>
                         <outlet property="signInButtonOutlet" destination="ij6-6e-YNa" id="uew-Ls-YaR"/>
                         <outlet property="signInByGoogleButtonOutlet" destination="dw6-db-fRv" id="m9Q-hc-Tgi"/>
+                        <outlet property="signInStackView" destination="Iih-Jg-dYo" id="0sC-lW-bZg"/>
                         <outlet property="signUpButtonOutlet" destination="Tk0-Bq-XY5" id="O63-2q-FvM"/>
                         <outlet property="signUpLabel" destination="rRh-bC-cuL" id="yP6-ZW-cBg"/>
                     </connections>

@@ -47,7 +47,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, GIDSignInDelegate {
             }
             let storyboard =  UIStoryboard(name: "Main", bundle: nil)
             // redirect the user to the main controller
-            self.window!.rootViewController = storyboard.instantiateViewController(withIdentifier: "MyNotesNavigationController") as! UINavigationController
+            //add transition to MyNotesNavigationController when user sing-in
+            UIView.transition(with: self.window!, duration: 0.5, options: .transitionCurlUp) {
+                self.window!.rootViewController = storyboard.instantiateViewController(withIdentifier: "MyNotesNavigationController") as! UINavigationController
+            }
             self.window!.makeKeyAndVisible()
         }
     }

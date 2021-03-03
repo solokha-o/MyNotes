@@ -54,7 +54,8 @@ class SignInViewController: UIViewController {
     
     var currentState: State = .signIn
     
-    
+    //add all components of controller to stack view
+    @IBOutlet weak var signInStackView: UIStackView!
     //add all components of controller
     @IBOutlet weak var authorisationLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
@@ -74,24 +75,103 @@ class SignInViewController: UIViewController {
         
         setupController()
     }
-    
+    //configure sing-in button
     @IBAction func signInButtonAction(_ sender: UIButton) {
+        //get email and password from TextField
+        let userEmail = emailTextField.text
+        let userPassword = passwordTextField.text
+        var errorMessage = ""
+        if let email = userEmail, let password = userPassword {
+            switch currentState {
+                // if state of controller sing-up create new user and check entering information
+                case .signUp:
+                    Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                        if let error = error as NSError? {
+                            switch AuthErrorCode(rawValue: error.code) {
+                                case .emailAlreadyInUse:
+                                    // Error: The email address is already in use by another account.
+                                    errorMessage = "⛔️\nEmail is already in use by another account."
+                                case .invalidEmail:
+                                    // Error: The email address is badly formatted.
+                                    errorMessage = "⛔️\nThe email address is badly formatted"
+                                case .weakPassword:
+                                    // Error: The password must be 6 characters long or more.
+                                    errorMessage = "⛔️\nThe password must be 6 characters long or more"
+                                default:
+                                    print("Error: \(error.localizedDescription)")
+                            }
+                            self.errorAlert(with: errorMessage)
+                        } else {
+                            //if sing-up is successfully user can sing-in
+                            print("User signs up successfully")
+                            errorMessage = "👍\nSign-up is successfully! Now you can sing-in."
+                            self.errorAlert(with: errorMessage)
+                            UIView.transition(with: self.signInStackView, duration: 0.5, options: .transitionFlipFromBottom) {
+                                self.currentState = .signIn
+                                self.setupController()
+                            }
+                        }
+                    }
+                    //if state of controller is sing-in user can to enter email and password and its check
+                case .signIn:
+                    Auth.auth().signIn(withEmail: email, password: password) { (authResult, error) in
+                        if let error = error as NSError? {
+                            switch AuthErrorCode(rawValue: error.code) {
+                                case .userDisabled:
+                                    // Error: The user account has been disabled by an administrator.
+                                    errorMessage = "⛔️\nAccount has been block. Please, will write to oleksandr.solokha@gmail.com."
+                                case .wrongPassword:
+                                    // Error: The password is invalid or the user does not have a password.
+                                    errorMessage = "⛔️\nThe email or the password is invalid."
+                                case .invalidEmail:
+                                    // Error: Indicates the email address is malformed.
+                                    errorMessage = "⛔️\nThe email or the password is invalid."
+                                default:
+                                    print("Error: \(error.localizedDescription)")
+                            }
+                            self.errorAlert(with: errorMessage)
+                        } else {
+                            print("User signs in successfully")
+                            //configure transition to MyNotesNavigationController when user log in
+                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            guard let myNotesTVC = storyboard.instantiateViewController(withIdentifier: "MyNotesNavigationController") as? UINavigationController else { return }
+                            guard let window = UIApplication.shared.windows.first else {
+                                return
+                            }
+                            UIView.transition(with: window, duration: 0.5, options: .transitionCurlUp) {
+                                window.rootViewController = myNotesTVC
+                            }
+                            window.makeKeyAndVisible()
+                        }
+                    }
+            }
+        } else {
+            errorMessage = "⛔️\nPlease, enter email and password"
+            errorAlert(with: errorMessage)
+        }
     }
     //configure sing-up button action
     @IBAction func signUpButtonAction(_ sender: UIButton) {
         switch currentState {
             case .signIn:
                 currentState = .signUp
-                UIView.animate(withDuration: 0.5, animations: {
+                UIView.transition(with: signInStackView, duration: 0.5, options: .transitionFlipFromTop) {
                     self.setupController()
-                })
+                }
             case .signUp:
                 currentState = .signIn
-                UIView.animate(withDuration: 0.5, animations: {
+                UIView.transition(with: signInStackView, duration: 0.5, options: .transitionFlipFromBottom) {
                     self.setupController()
-                })
+                }
         }
     }
+    //configure alert that can show message with error
+    func errorAlert(with message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
     //configure controller and all his components
     func setupController() {
         switch currentState {
