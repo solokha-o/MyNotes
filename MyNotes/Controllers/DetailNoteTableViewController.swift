@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 // create protocol to pass Note
 protocol DetailNoteTableViewControllerDelegate {
     func addNote(_ detailNoteTableViewController: DetailNoteTableViewController, didAddNote noteModel: NoteModel )
@@ -20,14 +21,14 @@ class DetailNoteTableViewController: UITableViewController {
         
         var rightButtonTitle: String {
             switch self {
-            case .saveNote: return "Save"
-            case .editNote: return "Edit"
+                case .saveNote: return "Save"
+                case .editNote: return "Edit"
             }
         }
         var navigationTitle: String {
             switch self {
-            case .saveNote: return "New note"
-            case .editNote: return "My note"
+                case .saveNote: return "New note"
+                case .editNote: return "My note"
             }
         }
     }
@@ -81,6 +82,8 @@ class DetailNoteTableViewController: UITableViewController {
     var editNote = NoteModel()
     // create bool instance for check edit note
     var isSaveEditNote = false
+    //create current user when controller to view
+    let user = Auth.auth().currentUser
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,12 +108,12 @@ class DetailNoteTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var titleSection = ""
         switch section {
-        case 0:
-            titleSection = "Title"
-        case 1:
-            titleSection = "Note's body"
-        default:
-            break
+            case 0:
+                titleSection = "Title"
+            case 1:
+                titleSection = "Note's body"
+            default:
+                break
         }
         return titleSection
     }
@@ -126,49 +129,50 @@ class DetailNoteTableViewController: UITableViewController {
         
         //configure button for state save or edit
         switch isEditingNote {
-        case false:
-            if isSaveEditNote {
-                if sender.title == "Save" {
-                    editNote.title = titleNoteTextField.text ?? ""
-                    editNote.body = bodyNoteTextView.text ?? ""
-                    print(editNote.id)
+            case false:
+                if isSaveEditNote {
+                    if sender.title == "Save" {
+                        editNote.title = titleNoteTextField.text ?? ""
+                        editNote.body = bodyNoteTextView.text ?? ""
+                        print(editNote.id)
+                        if titleNoteTextField.text == "" || (bodyNoteTextView.text == "Enter your note" || bodyNoteTextView.text == "") {
+                            let alert = UIAlertController(title: "You forgot", message: "The field must be filled!", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                        } else {
+                            // pass to delegate noteModel
+                            delegate?.addNote(self, didAddNote: editNote)
+                            navigationController?.popToRootViewController(animated: true)
+                            isSaveEditNote = false
+                        }
+                    }
+                } else {
+                    let titleNote = titleNoteTextField.text ?? ""
+                    let bodyNote = bodyNoteTextView.text ?? ""
+                    noteModel.title = titleNote
+                    noteModel.body = bodyNote
+                    noteModel.favourite = false
+                    noteModel.id = UUID() .uuidString
+                    noteModel.date = dateFormatter.string(from: date)
                     if titleNoteTextField.text == "" || (bodyNoteTextView.text == "Enter your note" || bodyNoteTextView.text == "") {
                         let alert = UIAlertController(title: "You forgot", message: "The field must be filled!", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                     } else {
-                        // pass to delegate noteModel
-                        delegate?.addNote(self, didAddNote: editNote)
-                        navigationController?.popToRootViewController(animated: true)
-                        isSaveEditNote = false
+                        // pass to delegate noteModel and write note to Database
+                        delegate?.addNote(self, didAddNote: noteModel)
+                        navigationController?.popViewController(animated: true)
+                        RealTimeDataBaseModel.shared.writeValue(for: user, in: noteModel)
                     }
                 }
-            } else {
-                let titleNote = titleNoteTextField.text ?? ""
-                let bodyNote = bodyNoteTextView.text ?? ""
-                noteModel.title = titleNote
-                noteModel.body = bodyNote
-                noteModel.favourite = false
-                noteModel.id = UUID() .uuidString
-                noteModel.date = dateFormatter.string(from: date)
-                if titleNoteTextField.text == "" || (bodyNoteTextView.text == "Enter your note" || bodyNoteTextView.text == "") {
-                    let alert = UIAlertController(title: "You forgot", message: "The field must be filled!", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                } else {
-                    // pass to delegate noteModel
-                    delegate?.addNote(self, didAddNote: noteModel)
-                    navigationController?.popViewController(animated: true)
-                }
-            }
-        case true:
-            currentState = .editNote
-            sender.title = "Save"
-            navigationItem.title = "Edit note"
-            titleNoteTextField.isUserInteractionEnabled = true
-            bodyNoteTextView.isUserInteractionEnabled = true
-            isSaveEditNote = true
-            isEditingNote = false
+            case true:
+                currentState = .editNote
+                sender.title = "Save"
+                navigationItem.title = "Edit note"
+                titleNoteTextField.isUserInteractionEnabled = true
+                bodyNoteTextView.isUserInteractionEnabled = true
+                isSaveEditNote = true
+                isEditingNote = false
         }
     }
     // configure design Controller

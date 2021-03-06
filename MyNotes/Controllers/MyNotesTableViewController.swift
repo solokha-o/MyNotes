@@ -33,11 +33,14 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
     var isFiltering: Bool {
         return search.isActive && !isSearchBarEmpty
     }
+    //create current user when controller to view
+    let user = Auth.auth().currentUser
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //fetch notes
-        notes = crudModel.fetchNote(notes: notes)
+        //        notes = crudModel.fetchNote(notes: notes)
+        getDataFromFireBase()
         //call setup and configure function
         configureDesignController()
         setSearch()
@@ -181,6 +184,13 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
             return true
         }
         tableView.reloadData()
+    }
+    //get note from Database to tableView
+    func getDataFromFireBase() {
+        RealTimeDataBaseModel.shared.getValue(for: user) { [weak self] notes in
+            self?.notes = notes
+            self?.tableView.reloadData()
+        }
     }
     //configure action for log out button
     @IBAction func logOutButtonAction(_ sender: UIBarButtonItem) {

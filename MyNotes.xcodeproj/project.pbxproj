@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		81517F5CB9CDBFA7AEDCB1A4 /* Pods_MyNotes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D34813A2906C20BBC2C3EB8 /* Pods_MyNotes.framework */; };
+		DB2847EF25F0BE73007FDD77 /* RealTimeDataBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2847EE25F0BE73007FDD77 /* RealTimeDataBaseModel.swift */; };
 		DB29148A248560000010D818 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB291489248560000010D818 /* AppDelegate.swift */; };
 		DB29148C248560000010D818 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB29148B248560000010D818 /* SceneDelegate.swift */; };
 		DB291491248560000010D818 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB29148F248560000010D818 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 		DB2914A52485725B0010D818 /*  NoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2914A42485725B0010D818 /*  NoteModel.swift */; };
 		DB2914A7248573C10010D818 /* CRUDModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2914A6248573C10010D818 /* CRUDModel.swift */; };
 		DB4F8C6625E42242004987EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB4F8C6525E42242004987EC /* GoogleService-Info.plist */; };
+		DB6285FC25F3657F006ED2C1 /* Extension + convenience init.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6285FB25F3657F006ED2C1 /* Extension + convenience init.swift */; };
 		DB6A00C325E65CA600170F05 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6A00C225E65CA600170F05 /* SignInViewController.swift */; };
 		DB6ABEDF248C2C1700C64543 /* NoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6ABEDE248C2C1700C64543 /* NoteTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -26,6 +28,7 @@
 /* Begin PBXFileReference section */
 		1D34813A2906C20BBC2C3EB8 /* Pods_MyNotes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyNotes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D77679E29FF83961414D6E0 /* Pods-MyNotes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyNotes.debug.xcconfig"; path = "Target Support Files/Pods-MyNotes/Pods-MyNotes.debug.xcconfig"; sourceTree = "<group>"; };
+		DB2847EE25F0BE73007FDD77 /* RealTimeDataBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimeDataBaseModel.swift; sourceTree = "<group>"; };
 		DB291486248560000010D818 /* MyNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB291489248560000010D818 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DB29148B248560000010D818 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +42,7 @@
 		DB2914A42485725B0010D818 /*  NoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " NoteModel.swift"; sourceTree = "<group>"; };
 		DB2914A6248573C10010D818 /* CRUDModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRUDModel.swift; sourceTree = "<group>"; };
 		DB4F8C6525E42242004987EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DB6285FB25F3657F006ED2C1 /* Extension + convenience init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + convenience init.swift"; sourceTree = "<group>"; };
 		DB6A00C225E65CA600170F05 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		DB6ABEDE248C2C1700C64543 /* NoteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTableViewCell.swift; sourceTree = "<group>"; };
 		ECB0476D4A494FF266408947 /* Pods-MyNotes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyNotes.release.xcconfig"; path = "Target Support Files/Pods-MyNotes/Pods-MyNotes.release.xcconfig"; sourceTree = "<group>"; };
@@ -90,6 +94,7 @@
 				DB29148B248560000010D818 /* SceneDelegate.swift */,
 				DB588233249A1CDC00B8AEBB /* Controllers */,
 				DB588234249A1D0400B8AEBB /* Models */,
+				DB6285FA25F36522006ED2C1 /* Extension */,
 				DB29148F248560000010D818 /* Main.storyboard */,
 				DB291495248560050010D818 /* Assets.xcassets */,
 				DB291497248560050010D818 /* LaunchScreen.storyboard */,
@@ -116,8 +121,17 @@
 			children = (
 				DB2914A42485725B0010D818 /*  NoteModel.swift */,
 				DB2914A6248573C10010D818 /* CRUDModel.swift */,
+				DB2847EE25F0BE73007FDD77 /* RealTimeDataBaseModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		DB6285FA25F36522006ED2C1 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				DB6285FB25F3657F006ED2C1 /* Extension + convenience init.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		F67748DEC4A1E8EBFF39584D /* Frameworks */ = {
@@ -264,6 +278,8 @@
 			files = (
 				DB29148A248560000010D818 /* AppDelegate.swift in Sources */,
 				DB2914A3248572140010D818 /* DetailNoteTableViewController.swift in Sources */,
+				DB6285FC25F3657F006ED2C1 /* Extension + convenience init.swift in Sources */,
+				DB2847EF25F0BE73007FDD77 /* RealTimeDataBaseModel.swift in Sources */,
 				DB2914A52485725B0010D818 /*  NoteModel.swift in Sources */,
 				DB6ABEDF248C2C1700C64543 /* NoteTableViewCell.swift in Sources */,
 				DB29148C248560000010D818 /* SceneDelegate.swift in Sources */,
