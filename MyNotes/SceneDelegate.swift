@@ -57,7 +57,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, GIDSignInDelegate {
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
         // Perform any operations when the user disconnects from app here.
-        // TODO - make that used out from authorisation
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            //configure transition to SignInViewController  when user log out
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            guard let signInVC = storyboard.instantiateViewController(identifier: "SignInViewController") as? SignInViewController else { return }
+            guard let window = UIApplication.shared.windows.first else {
+                return
+            }
+            UIView.transition(with: window, duration: 0.5, options: .transitionCurlDown) {
+                window.rootViewController = signInVC
+            }
+            window.makeKeyAndVisible()
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {

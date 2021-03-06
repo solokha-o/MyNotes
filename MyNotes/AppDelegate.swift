@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         //add google sign-in configuration to app
         FirebaseApp.configure()
+        //configure app work offline
+        Database.database().isPersistenceEnabled = true
         return true
     }
     //open firebase link from url shame
