@@ -83,7 +83,8 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
+            // Delete the row from the data source and Database
+            RealTimeDataBaseModel.shared.deleteValue(for: user, to: notes[indexPath.row].id)
             crudModel.removeNote(note: notes[indexPath.row])
             notes.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
@@ -130,8 +131,8 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
                 modelNote.date = date
                 modelNote.id = id
                 modelNote.favourite = !note.favourite
+                RealTimeDataBaseModel.shared.upDateValue(for: self.user, in: modelNote)
                 self.crudModel.updatenote(notes: self.notes, noteModel: modelNote)
-                self.notes = self.crudModel.fetchNote(notes: self.notes)
                 self.tableView.reloadData()
                 complition(true)
             }
@@ -149,10 +150,11 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
     }
     //configure delegate parameters
     func addNote(_ detailNoteTableViewController: DetailNoteTableViewController, didAddNote noteModel: NoteModel) {
-        // if state edit coreData we find note for id and update in coreData and  tableview
+        // if state edit coreData we find note for id and update in coreData and  Database
         if isUpdateCoreData {
+            RealTimeDataBaseModel.shared.upDateValue(for: user, in: noteModel)
             crudModel.updatenote(notes: notes, noteModel: noteModel)
-            notes = crudModel.fetchNote(notes: notes)
+            //            notes = crudModel.fetchNote(notes: notes)
             isUpdateCoreData = false
         } else {
             notes.append(crudModel.saveNote(noteModel: noteModel))

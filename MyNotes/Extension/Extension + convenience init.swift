@@ -19,6 +19,6 @@ extension Note {
         self.body = snapshot["body"] as? String ?? ""
         self.date = snapshot["date"] as? String ?? ""
         self.favourite = snapshot["favourite"] as? Bool ?? false
-        self.id = snapshot["title"] as? String ?? ""
+        self.id = snapshot["id"] as? String ?? ""
     }
 }

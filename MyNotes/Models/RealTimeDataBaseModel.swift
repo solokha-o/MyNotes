@@ -17,8 +17,9 @@ struct RealTimeDataBaseModel {
     //write note to Database
     func writeValue(for user: User?, in note: NoteModel) {
         guard let uid = user?.uid else { return }
-        let noteRef = self.ref.child(uid).child(note.title)
+        let noteRef = self.ref.child(uid).child(note.id)
         noteRef.setValue(note.anyObject)
+        print("Save note to Database: \(note.anyObject)")
     }
     //read note from Database and write it on Core Data
     func getValue(for user: User?, completion: @escaping (([Note]) -> Void)) {
@@ -44,13 +45,20 @@ struct RealTimeDataBaseModel {
         }
     }
     //update note in Database
-    func upDateValue(for note: NoteModel) {
-        
+    func upDateValue(for user: User?, in note: NoteModel) {
+        guard let uid = user?.uid else { return }
+        let editingNote = note.anyObject
+        let post = ["\(note.id)" : editingNote]
+        ref.child(uid).updateChildValues(post)
+        print("Update note to \(post)")
     }
     //delete note from Database
-    func deleteValue(to note: NoteModel) {
-        
+    func deleteValue(for user: User?, to noteID: String?) {
+        guard let uid = user?.uid else { return }
+        if let id = noteID {
+            ref.child(uid).child(id).removeValue()
+            print("Delete note from Database for user \(uid) whit id \(id) ")
+        }
     }
-    
 }
 

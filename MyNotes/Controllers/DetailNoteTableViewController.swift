@@ -134,6 +134,7 @@ class DetailNoteTableViewController: UITableViewController {
                     if sender.title == "Save" {
                         editNote.title = titleNoteTextField.text ?? ""
                         editNote.body = bodyNoteTextView.text ?? ""
+                        editNote.date = dateFormatter.string(from: date)
                         print(editNote.id)
                         if titleNoteTextField.text == "" || (bodyNoteTextView.text == "Enter your note" || bodyNoteTextView.text == "") {
                             let alert = UIAlertController(title: "You forgot", message: "The field must be filled!", preferredStyle: .alert)
