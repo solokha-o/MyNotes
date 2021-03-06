@@ -31,7 +31,7 @@ struct RealTimeDataBaseModel {
                     print(value)
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     let context = appDelegate.persistentContainer.viewContext
-                    if let note = Note(shapshot: value as? [String : AnyObject] ?? [:], insertIntoManagedObjectContext: context) {
+                    if let note = Note(snapshot: value as? [String : AnyObject] ?? [:], insertIntoManagedObjectContext: context) {
                         print("Get note\(note)")
                         notes.append(note)
                     }

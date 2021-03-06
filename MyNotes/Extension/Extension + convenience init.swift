@@ -11,14 +11,14 @@ import CoreData
 
 //configure init for Type Note with snapshot and insertIntoManagedObjectContext
 extension Note {
-    convenience init?(shapshot: [String: AnyObject], insertIntoManagedObjectContext context: NSManagedObjectContext) {
+    convenience init?(snapshot: [String: AnyObject], insertIntoManagedObjectContext context: NSManagedObjectContext) {
         self.init()
         guard let entity = NSEntityDescription.entity(forEntityName: "Note", in: context) else {return}
         self.init(entity: entity, insertInto: context)
-        self.title = shapshot["title"] as? String ?? ""
-        self.body = shapshot["body"] as? String ?? ""
-        self.date = shapshot["date"] as? String ?? ""
-        self.favourite = shapshot["favourite"] as? Bool ?? false
-        self.id = shapshot["title"] as? String ?? ""
+        self.title = snapshot["title"] as? String ?? ""
+        self.body = snapshot["body"] as? String ?? ""
+        self.date = snapshot["date"] as? String ?? ""
+        self.favourite = snapshot["favourite"] as? Bool ?? false
+        self.id = snapshot["title"] as? String ?? ""
     }
 }
