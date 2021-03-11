@@ -1,3 +1,4 @@
+<HEAD><TITLE>MyNotes</HEAD></TITLE>
 Let me present iOS mobile app MyNotes<br/>
 Mobile iOS app written by Swift language what you can run on iPhone or iPad.<br/>
 In app need authorisation with email and password or with Google account.<br/>
