@@ -10,6 +10,8 @@ import UIKit
 import CoreData
 import Firebase
 import GoogleSignIn
+import FirebaseAnalytics
+import GoogleMobileAds
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +21,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         //configure app work offline
         Database.database().isPersistenceEnabled = true
+        //add analytics of log events
+        let title = ""
+        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+            AnalyticsParameterItemID: "id-\(title)",
+            AnalyticsParameterItemName: title,
+            AnalyticsParameterContentType: "cont"
+        ])
+        Analytics.setAnalyticsCollectionEnabled(true)
+        // Initialise the Google Mobile Ads SDK.
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        
         return true
     }
     //open firebase link from url shame
@@ -85,6 +98,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
 }
 

@@ -9,6 +9,9 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import GoogleMobileAds
+import AppTrackingTransparency
+import AdSupport
 
 class MyNotesTableViewController: UITableViewController, DetailNoteTableViewControllerDelegate {
     //create and configure log out from account button
@@ -35,6 +38,9 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
     }
     //create current user when controller to view
     let user = Auth.auth().currentUser
+    //create google ads banner
+    var bannerView: GADBannerView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +53,13 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
         tableView.tableFooterView = UIView()
         // setup leftBarButtonItem
         self.navigationItem.leftBarButtonItem = self.editButtonItem
+        // In this case, we instantiate the banner with desired ad size.
+        bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+        bannerView.adUnitID = "ca-app-pub-5473593541867943/6048671865"
+        bannerView.rootViewController = self
+        requestIDFA()
+        bannerView.delegate = self
+        addBannerViewToView(bannerView)
     }
     
     // MARK: - Table view data source
@@ -194,6 +207,38 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
             self?.tableView.reloadData()
         }
     }
+    //configure google ads banner
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        view.addConstraints(
+            [NSLayoutConstraint(item: bannerView,
+                                attribute: .bottom,
+                                relatedBy: .equal,
+                                toItem: bottomLayoutGuide,
+                                attribute: .top,
+                                multiplier: 1,
+                                constant: 0),
+             NSLayoutConstraint(item: bannerView,
+                                attribute: .centerX,
+                                relatedBy: .equal,
+                                toItem: tableView,
+                                attribute: .centerX,
+                                multiplier: 1,
+                                constant: 0)
+            ])
+    }
+    
+    func requestIDFA() {
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
+                // Tracking authorisation completed. Start loading ads here.
+                self.bannerView.load(GADRequest())
+            })
+        } else {
+            bannerView.load(GADRequest())
+        }
+    }
     //configure action for log out button
     @IBAction func logOutButtonAction(_ sender: UIBarButtonItem) {
         let firebaseAuth = Auth.auth()
@@ -219,5 +264,35 @@ extension MyNotesTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar = search.searchBar
         filterContentForSearchText(searchBar.text!)
+    }
+}
+
+//configure extension with GADBannerViewDelegate protocol
+extension MyNotesTableViewController: GADBannerViewDelegate {
+    // Tells the delegate an ad request loaded an ad.
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("adViewDidReceiveAd")
+        bannerView.alpha = 0
+        UIView.animate(withDuration: 1, animations: {
+            bannerView.alpha = 1
+        })
+    }
+    // Tells the delegate that a full-screen view will be presented in response
+    // to the user clicking on an ad.
+    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+        print("adViewWillPresentScreen")
+    }
+    // Tells the delegate that the full-screen view will be dismissed.
+    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewWillDismissScreen")
+    }
+    // Tells the delegate that the full-screen view has been dismissed.
+    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+        print("adViewDidDismissScreen")
+    }
+    // Tells the delegate that a user click will open another app (such as
+    // the App Store), backgrounding the current app.
+    func adViewWillLeaveApplication(_ bannerView: GADBannerView) {
+        print("adViewWillLeaveApplication")
     }
 }
