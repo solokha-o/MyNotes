@@ -200,10 +200,23 @@ class MyNotesTableViewController: UITableViewController, DetailNoteTableViewCont
         }
         tableView.reloadData()
     }
-    //get note from Database to tableView
+    //get note from Database to tableView sorted by date of note
     func getDataFromFireBase() {
         RealTimeDataBaseModel.shared.getValue(for: user) { [weak self] notes in
-            self?.notes = notes
+            self?.notes = notes.sorted {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "dd.MM.yy"
+                if let noteDate0 = $0.date, let noteDate1 = $1.date {
+                    if let date0 = dateFormatter.date(from: noteDate0), let date1 = dateFormatter.date(from: noteDate1) {
+                        if date0 > date1 {
+                            return true
+                        } else {
+                            return false
+                        }
+                    }
+                }
+                return true
+            }
             self?.tableView.reloadData()
         }
     }

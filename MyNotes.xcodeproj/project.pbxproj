@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		81517F5CB9CDBFA7AEDCB1A4 /* Pods_MyNotes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D34813A2906C20BBC2C3EB8 /* Pods_MyNotes.framework */; };
 		DB2847EF25F0BE73007FDD77 /* RealTimeDataBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2847EE25F0BE73007FDD77 /* RealTimeDataBaseModel.swift */; };
 		DB29148A248560000010D818 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB291489248560000010D818 /* AppDelegate.swift */; };
 		DB29148C248560000010D818 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB29148B248560000010D818 /* SceneDelegate.swift */; };
@@ -23,7 +22,23 @@
 		DB6285FC25F3657F006ED2C1 /* Extension + convenience init.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6285FB25F3657F006ED2C1 /* Extension + convenience init.swift */; };
 		DB6A00C325E65CA600170F05 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6A00C225E65CA600170F05 /* SignInViewController.swift */; };
 		DB6ABEDF248C2C1700C64543 /* NoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6ABEDE248C2C1700C64543 /* NoteTableViewCell.swift */; };
+		DBBBCB792614CEE20027F41D /* Pods_MyNotes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D34813A2906C20BBC2C3EB8 /* Pods_MyNotes.framework */; };
+		DBBBCB7A2614CEE20027F41D /* Pods_MyNotes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1D34813A2906C20BBC2C3EB8 /* Pods_MyNotes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DBBBCB7B2614CEE20027F41D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				DBBBCB7A2614CEE20027F41D /* Pods_MyNotes.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1D34813A2906C20BBC2C3EB8 /* Pods_MyNotes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyNotes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -53,7 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81517F5CB9CDBFA7AEDCB1A4 /* Pods_MyNotes.framework in Frameworks */,
+				DBBBCB792614CEE20027F41D /* Pods_MyNotes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +170,7 @@
 				DB291484248560000010D818 /* Resources */,
 				2DD38C21DF20E8414F5015D9 /* [CP] Embed Pods Frameworks */,
 				8D89166C3AC533F989612AC9 /* [CP] Copy Pods Resources */,
+				DBBBCB7B2614CEE20027F41D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
